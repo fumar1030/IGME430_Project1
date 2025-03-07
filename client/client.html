@@ -142,9 +142,9 @@
               <h3>Test This Endpoint</h3>
               <form data-method="POST" data-endpoint="/api/addBook">
                 <label>Title: <input type="text" name="title"></label><br>
-                <label>Year: <input type="text" name="year"></label><br>
+                <label>Author: <input type="text" name="author"></label><br>
                 <label>Genres: <input type="text" name="genres"></label><br>
-                <label>Author: <input type="text" name="cast"></label><br>
+                <label>Year: <input type="text" name="year"></label><br>
                 <button type="submit">Send Request</button>
               </form>
               <pre class="result"></pre>
@@ -168,6 +168,22 @@
             </div>
           </div>
         </div>
+
+        <div class="endpoint">
+            <h2 class="collapsible">
+              /api/deleteBook <span class="methods"><code>DELETE</code></span>
+            </h2>
+            <div class="content">
+              <div class="content-box">
+                <h3>Test This Endpoint</h3>
+                <form data-method="DELETE" data-endpoint="/api/deleteBook">
+                  <label>Title: <input type="text" name="title"></label><br>
+                  <button type="submit">Send Request</button>
+                </form>
+                <pre class="result"></pre>
+              </div>
+            </div>
+          </div>
       </div>
     </body>
 </html>

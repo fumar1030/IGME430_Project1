@@ -19,18 +19,26 @@ const parseBody = (request, response, handler) => {
     });
   
     request.on('end', () => {
-      const bodyString = Buffer.concat(body).toString();
-      request.body = query.parse(bodyString);
+        const bodyString = Buffer.concat(body).toString();
+        if (request.headers['content-type'] === 'application/json') {
+            try {
+                request.body = JSON.parse(bodyString);
+            } catch (err) {
+                return sendResponse(response, 400, JSON.stringify({ message: 'Invalid JSON' }));
+            }
+        } else {
+            request.body = query.parse(bodyString);
+        }
   
       handler(request, response);
     });
   };
 
 const handlePost = (request, response, parsedUrl) => {
-    if (parsedUrl.pathname === '/addBook') {
+    if (parsedUrl.pathname === '/api/addBook') {
         parseBody(request, response, jsonHandler.addBook);
     }
-    else if(parsedUrl.pathname === '/rateBook'){
+    else if(parsedUrl.pathname === '/api/rateBook'){
         parseBody(request, response, jsonHandler.rateBook);
     }
 };
@@ -65,16 +73,22 @@ const handleGet = (request, response, parsedUrl) => {
     }
   };
   
+  const handleDelete = (request, response) =>{
+    return jsonHandler.deleteBook(request, response);
+}
 
 const onRequest = (request, response) => {
     const protocol = request.connection.encrypted ? 'https' : 'http';
     const parsedUrl = new URL(request.url, `${protocol}://${request.headers.host}`);
 
     console.log(request.url);
-    console.log('Parsed Query:', parsedUrl.searchParams.toString()); // Debugging line
+    console.log(`Incoming request: ${request.method} ${parsedUrl.pathname}`);
 
     if(request.method === 'POST'){
         handlePost(request,response, parsedUrl);
+    }
+    else if(request.method === 'DELETE'){
+        handleDelete(request, response);
     }
     else{
         handleGet(request,response,parsedUrl);

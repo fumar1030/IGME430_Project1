@@ -39,8 +39,15 @@ const getBookTitles = (request, response, parsedUrl) => {
         if (year) {
             filteredBooks = filteredBooks.filter(book => book.year === parseInt(year));
         }
-    
-    sendResponse(response, 200, JSON.stringify({ books: filteredBooks }));
+    //Making it where it only prints the titles
+    const titles = filteredBooks.map(book => book.title);
+
+    //If there are no books at all
+    if (titles.length === 0) {
+        return sendResponse(response, 404, JSON.stringify({ message: 'No books found matching the criteria' }));
+    }
+
+    sendResponse(response, 200, JSON.stringify({ books: titles }));
 };
 
 ///
@@ -61,6 +68,10 @@ const getBooks = (request, response, parsedUrl) => {
     if (author) filteredBooks = filteredBooks.filter(book => book.author.toLowerCase().includes(author.toLowerCase()));
     if (year) filteredBooks = filteredBooks.filter(book => book.year === parseInt(year));
     
+    if (filteredBooks.length === 0) {
+        return sendResponse(response, 404, JSON.stringify({ message: 'No books found matching the criteria' }));
+    }
+
     sendResponse(response, 200, JSON.stringify({ books: filteredBooks }));
 };
 
@@ -110,7 +121,7 @@ const addBook = (request, response) => {
     //Adding the new book
     const newBook = { title, author, year: parseInt(year), genres: genres.split(',').map(g => g.trim()) };
     books.push(newBook);
-    sendResponse(response, 201, JSON.stringify({ message: 'Book added' }));
+    sendResponse(response, 201, JSON.stringify({newBook}));
 };
 
 ///
@@ -128,7 +139,28 @@ const rateBook = (request, response) => {
     
     //Updating book
     book.rating = parseFloat(rating);
-    sendResponse(response, 204);
+    sendResponse(response, 200, JSON.stringify({book}));
+};
+
+/// 
+///Will delete a book title
+///
+const deleteBook = (request, response) => {
+    console.log('delete works')
+    const { title } = request.body;
+
+    if (!title) {
+        return sendResponse(response, 400, JSON.stringify({ message: 'Title is required' }));
+    }
+
+    const initialLength = books.length;
+    books = books.filter(book => book.title.toLowerCase() !== title.toLowerCase());
+
+    if (books.length === initialLength) {
+        return sendResponse(response, 404, JSON.stringify({ message: 'Book not found' }));
+    }
+    
+    sendResponse(response, 204,JSON.stringify({ message: 'Book deleted' }))
 };
 
 const notReal = (request, response) => {
@@ -155,5 +187,6 @@ module.exports = {
     getAllBooks,
     addBook,
     rateBook,
+    deleteBook,
     notReal
 };
