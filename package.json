@@ -1,0 +1,26 @@
+{
+  "name": "igme430_project1",
+  "version": "23.0.0",
+  "description": "",
+  "homepage": "https://github.com/fumar1030/IGME430_Project1#readme",
+  "bugs": {
+    "url": "https://github.com/fumar1030/IGME430_Project1/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fumar1030/IGME430_Project1.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "pretest": "eslint ./src --fix",
+    "test": "echo \"Tests complete\""  },
+  "devDependencies": {
+    "eslint": "^9.21.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.31.0"
+  }
+}

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        window.onload = () => {
+        document.querySelectorAll(".collapsible").forEach(button => {
+            button.addEventListener("click", () => {
+                document.querySelectorAll(".content").forEach(content => {
+                    if (content !== button.nextElementSibling) content.style.display = "none";
+                });
+                let content = button.nextElementSibling;
+                content.style.display = content.style.display === "block" ? "none" : "block";
+            });
+        });
+
+        document.querySelectorAll("form").forEach(form => {
+            form.addEventListener("submit", async event => {
+                event.preventDefault();
+
+                const formData = new FormData(form);
+
+                formData.forEach((value, key) => {
+                if (value && typeof value === 'string') {
+                    formData.set(key, value.trim().toLowerCase());
+                }
+            });
+
+                const queryString = new URLSearchParams(formData).toString();
+                const method = form.querySelector('input[name="method"]:checked')?.value || form.dataset.method;
+                const url = form.dataset.endpoint + (queryString && method !== "POST" ? `?${queryString}` : "");
+                const resultBox = form.nextElementSibling;
+
+                try {
+                    const response = await fetch(url, {
+                        method,
+                        headers: method === "POST" ? { "Content-Type": "application/json" } : {},
+                        body: method === "POST" ? JSON.stringify(Object.fromEntries(formData)) : null
+                    });
+
+                    let text = await response.text();
+                    if (text.length > 300) text = text.substring(0, 300) + "...";
+
+                    resultBox.textContent = `Status: ${response.status}\nContent-Length: ${response.headers.get("Content-Length")}\nResponse: ${text}`;
+                } catch (error) {
+                    resultBox.textContent = `Error: ${error.message}`;
+                }
+            });
+        });
+    };
+    </script>
+</head>
+<body>
+    <!--I just used the basic html format that was used in the example because I wanted to focus on the backend-->
+    <div class="mainContent">
+        <a href="docs.html">API Documentation</a>
+        <h1>Book API</h1>
+    
+        <div class="endpoint">
+          <h2 class="collapsible">
+            /api/getBookTitles <span class="methods"><code>GET</code> <code>HEAD</code></span>
+          </h2>
+          <div class="content">
+            <div class="content-box">
+              <h3>Test This Endpoint</h3>
+              <form data-method="GET" data-endpoint="/api/getBookTitles">
+                <label>Author: <input type="text" name="author"></label><br>
+                <label>Year: <input type="text" name="year"></label><br>
+                <label><input type="radio" name="method" value="GET" checked> GET</label>
+                <label><input type="radio" name="method" value="HEAD"> HEAD</label><br>
+                <button type="submit">Send Request</button>
+              </form>
+              <pre class="result"></pre>
+            </div>
+          </div>
+        </div>
+    
+        <div class="endpoint">
+          <h2 class="collapsible">
+            /api/getBooks <span class="methods"><code>GET</code> <code>HEAD</code></span>
+          </h2>
+          <div class="content">
+            <div class="content-box">
+              <h3>Test This Endpoint</h3>
+              <form data-method="GET" data-endpoint="/api/getBooks">
+                <label>Title: <input type="text" name="title"></label><br>
+                <label>Author: <input type="text" name="author"></label><br>
+                <label>Year: <input type="text" name="year"></label><br>
+                <label><input type="radio" name="method" value="GET" checked> GET</label>
+                <label><input type="radio" name="method" value="HEAD"> HEAD</label><br>
+                <button type="submit">Send Request</button>
+              </form>
+              <pre class="result"></pre>
+            </div>
+          </div>
+        </div>
+    
+        <div class="endpoint">
+          <h2 class="collapsible">
+            /api/getBook <span class="methods"><code>GET</code> <code>HEAD</code></span>
+          </h2>
+          <div class="content">
+            <div class="content-box">
+              <h3>Test This Endpoint</h3>
+              <form data-method="GET" data-endpoint="/api/getBook">
+                <label>Title: <input type="text" name="title"></label><br>
+                <label><input type="radio" name="method" value="GET" checked> GET</label>
+                <label><input type="radio" name="method" value="HEAD"> HEAD</label><br>
+                <button type="submit">Send Request</button>
+              </form>
+              <pre class="result"></pre>
+            </div>
+          </div>
+        </div>
+    
+        <div class="endpoint">
+          <h2 class="collapsible">
+            /api/getAllBooks <span class="methods"><code>GET</code> <code>HEAD</code></span>
+          </h2>
+          <div class="content">
+            <div class="content-box">
+              <h3>Test This Endpoint</h3>
+              <form data-method="GET" data-endpoint="/api/getAllBooks">
+                <label><input type="radio" name="method" value="GET" checked> GET</label>
+                <label><input type="radio" name="method" value="HEAD"> HEAD</label><br>
+                <button type="submit">Send Request</button>
+              </form>
+              <pre class="result"></pre>
+            </div>
+          </div>
+        </div>
+    
+        <div class="endpoint">
+          <h2 class="collapsible">
+            /api/addBook <span class="methods"><code>POST</code></span>
+          </h2>
+          <div class="content">
+            <div class="content-box">
+              <h3>Test This Endpoint</h3>
+              <form data-method="POST" data-endpoint="/api/addBook">
+                <label>Title: <input type="text" name="title"></label><br>
+                <label>Year: <input type="text" name="year"></label><br>
+                <label>Genres: <input type="text" name="genres"></label><br>
+                <label>Author: <input type="text" name="cast"></label><br>
+                <button type="submit">Send Request</button>
+              </form>
+              <pre class="result"></pre>
+            </div>
+          </div>
+        </div>
+    
+        <div class="endpoint">
+          <h2 class="collapsible">
+            /api/rateBook <span class="methods"><code>POST</code></span>
+          </h2>
+          <div class="content">
+            <div class="content-box">
+              <h3>Test This Endpoint</h3>
+              <form data-method="POST" data-endpoint="/api/rateBook">
+                <label>Title: <input type="text" name="title"></label><br>
+                <label>Rating: <input type="number" name="rating" min="1" max="5"></label><br>
+                <button type="submit">Send Request</button>
+              </form>
+              <pre class="result"></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+</html>
