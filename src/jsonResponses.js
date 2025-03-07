@@ -145,10 +145,8 @@ const rateBook = (request, response) => {
 /// 
 ///Will delete a book title
 ///
-const deleteBook = (request, response) => {
-    console.log('delete works')
-    const { title } = request.body;
-
+const deleteBook = (request, response, parsedUrl) => {
+    const title = parsedUrl.searchParams.get('title');
     if (!title) {
         return sendResponse(response, 400, JSON.stringify({ message: 'Title is required' }));
     }

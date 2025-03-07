@@ -73,8 +73,8 @@ const handleGet = (request, response, parsedUrl) => {
     }
   };
   
-  const handleDelete = (request, response) =>{
-    return jsonHandler.deleteBook(request, response);
+  const handleDelete = (request, response, parsedUrl) =>{
+    jsonHandler.deleteBook(request, response, parsedUrl);
 }
 
 const onRequest = (request, response) => {
@@ -88,7 +88,7 @@ const onRequest = (request, response) => {
         handlePost(request,response, parsedUrl);
     }
     else if(request.method === 'DELETE'){
-        handleDelete(request, response);
+        handleDelete(request, response, parsedUrl);
     }
     else{
         handleGet(request,response,parsedUrl);
