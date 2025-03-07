@@ -5,7 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book API Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            line-height: 1.6;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
 <body>
-    Test
+    <a href="/">Book API</a>
+
+    <h1>Book API Documentation</h1>
+
+    <h2>/api/getBookTitles</h2>
+    <p><strong>Query Params:</strong></p>
+    <ul>
+        <li><code>author</code> (optional) - The author's name to filter by.</li>
+        <li><code>year</code> (optional) - A release year to filter by.</li>
+    </ul>
+    <p><strong>Returns:</strong> A JSON array of book title strings.</p>
+    <pre>Example:
+Request: /api/getBookTitles
+Result: ["title1", "title2", "title3"]
+    </pre>
+    
+    <h2>/api/getBooks</h2>
+    <p><strong>Query Params:</strong></p>
+    <ul>
+        <li><code>title</code> (optional) - Title of book.</li>
+        <li><code>author</code> (optional) - An author name to filter by.</li>
+        <li><code>year</code> (optional) - A release year to filter by.</li>
+    </ul>
+    <p><strong>Returns:</strong> A JSON array of book objects.</p>
+    <pre>Example:
+Request: /api/getBooks?title=title1
+Result: [{ title: "title1", year: 2001, genres: [""], rating: 3 }]
+    </pre>
+
+    <h2>/api/getBook</h2>
+    <p><strong>Query Params:</strong></p>
+    <ul>
+        <li><code>title</code> - Search name of the book.</li>
+    </ul>
+    <p><strong>Returns:</strong> A JSON book object.</p>
+    <pre>Example:
+Request: /api/getBook?title=title1
+Result: { title: "Title1", year: 2001, genres: ["genre1"], author: [""], rating: 3 }
+    </pre>
+
+    <h2>/api/getAllBooks</h2>
+    <p><strong>Query Params:</strong> None</p>
+    <p><strong>Returns:</strong> A JSON array of book objects.</p>
+    <pre>Example:
+Request: /api/getAllBooks
+Result: [{ title: "Title1", year: 2001, genres: ["genre1"], author: [], rating: 3 }, ...]
+    </pre>
+
+    <h2>/api/addBook</h2>
+    <p><strong>Body Params:</strong></p>
+    <ul>
+        <li><code>title</code> (string) - The name of the book.</li>
+        <li><code>year</code> (number) - Year when the book was released.</li>
+        <li><code>genres</code> (string) - A comma-separated string of genres.</li>
+        <li><code>author</code> (string) - The author of the book.</li>
+    </ul>
+    <p><strong>Returns:</strong> A JSON book object representing the new or updated book.</p>
+    <pre>Example:
+Request: /api/addBook
+Body: { title: "Title1", year: 2001, genres: "genre1,genre2", author: "Author1" }
+Result: { title: "Title1", year: 2001, genres: ["genre1", "genre2"], author: ["Author1"], rating: 3 }
+    </pre>
+
+    <h2>/api/rateBook</h2>
+    <p><strong>Body Params:</strong></p>
+    <ul>
+        <li><code>title</code> (string) - The name of the book.</li>
+        <li><code>rating</code> (number) - The rating of the book.</li>
+    </ul>
+    <p><strong>Returns:</strong> A JSON book object representing the updated book, or a 404 if the book does not exist.</p>
+    <pre>Example:
+Request: /api/rateBook
+Body: { title: "Title1", rating: 3 }
+Result: { title: "Title1", year: 2001, genres: ["genre1", "genre2"], author: [""], rating: 3 }
+    </pre>
+
+    <h2>/api/deleteBook</h2>
+    <p><strong>Query Params:</strong></p>
+    <ul>
+        <li><code>title</code> - The name of the book to delete.</li>
+    </ul>
+    <p><strong>Returns:</strong> 402 status code and removes the book from the dataset.</p>
+    <pre>Example:
+Request: /api/deleteBook?title=title1
+Result: {}
+    </pre>
 </body>
 </html>

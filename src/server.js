@@ -50,6 +50,9 @@ const handleGet = (request, response, parsedUrl) => {
     if (parsedUrl.pathname === '/') {
         htmlHandler.getIndex(request, response);
       }
+    else if(parsedUrl.pathname === '/docs.html'){
+        htmlHandler.getDocs(request,response);
+    }
     else if (parsedUrl.pathname === '/style.css') {
         htmlHandler.getStyle(request, response);
       }
